@@ -1,0 +1,62 @@
+
+<h2>Kategorie</h2>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'admin',
+    array(
+        'controller' => 'category',
+        'action' => 'index'
+    )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('title'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+
+<table>
+    <thead>
+    <tr>
+        <th>Zobrazeno</th>
+        <th>id</th>
+        <th>Název</th>
+        <th>Editovat</th>
+        <th>Odstranit</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($categories as $list) :
+            
+        
+        ?>
+    <tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+        <td>
+            <?php
+                if ($list->published)
+                { 
+            ?>
+                    <a class="icon tick ajax" href="<?php echo $this->url('admin', array('controller' => 'category', 'action'=>'publish', 'id' => $list->id));?>"></a>
+            <?php 
+                } else 
+                { 
+            ?>
+                    <a class="icon untick ajax" href="<?php echo $this->url('admin', array('controller' => 'category', 'action'=>'publish', 'id' => $list->id));?>"></a>
+            <?php    
+                }
+            ?>          
+        </td>
+
+        <td><?= $list->id; ?></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'find', 'id' => $list->id));?>"><?= $list->title; ?></a></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'category', 'action'=>'edit', 'id' => $list->id));?>"><span class="icon edit" title="editovat">editovat</span></a>
+        </td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'category', 'action'=>'delete', 'id' => $list->id));?>" class="icon delete ajax" title="smazat"></a></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

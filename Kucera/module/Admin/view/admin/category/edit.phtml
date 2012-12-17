@@ -1,0 +1,17 @@
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'admin',
+    array(
+        'controller' => 'category',
+        'action' => 'index'
+    )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('title'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>

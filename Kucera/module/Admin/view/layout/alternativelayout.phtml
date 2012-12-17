@@ -1,0 +1,92 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <!-- Le styles -->
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+                    ->prependStylesheet($this->basePath() . '/css/screen.css')
+                    ->prependStylesheet($this->basePath() . '/js/jquery/css/jquery-ui-1.8.16.custom.css');
+            ?>
+
+    <!-- Scripts -->
+    <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+                                  ->prependFile($this->basePath() . '/js/jquery/jquery-ui-1.8.16.custom.min.js')
+                                  ->prependFile($this->basePath() . '/js/jquery-1.7.2.min.js')
+            ?>
+  </head>
+
+  <body>
+      <div id="master">
+        <div id="header">
+            <h1><span>ZÁMEČNICTVÍ KUČERA</span></h1>
+            <h2>Odemkněte s námi Vaše životy!</h2>
+            <div id="admin-menu">
+                <a href="<?php echo $this->url('home') ?>">Hlavní stránka</a>
+                <a href="<?php echo $this->url('admin', array('action' => 'index'));?>">Administrace</a><br />
+                <?php if($this->identity) : ?>
+                    <a href="<?php echo $this->url('admin', array('controller' => 'sign', 'action' => 'logOut'));?>">Odhlásit</a>
+                <?php else : ?>
+                    <a href="<?php echo $this->url('admin', array('controller' => 'sign', 'action' => 'index'));?>">Přihlásit</a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a href="<?= $this->url('admin'); ?>">Přehled</a></li>
+                <li><a href="<?php echo $this->url('admin', array('controller' => 'category'));?>">Kategorie</a></li>
+                <li><a href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'index'));?>">Produkty</a></li>
+                <li><a href="<?php echo $this->url('admin', array('controller' => 'user', 'action'=>'index'));?>">Uživatelé</a></li>           
+            </ul>
+        </div>
+        <div id="contentBox">
+            <div id="leftmenu">
+                <ul>
+                    <?php foreach ($categoriesMenu as $category) :
+                        if ($category->published):
+                    ?>
+                    <li>
+                        <a href="<?php echo $this->url('eshop', array('action'=>'category', 'id' => $category->id));?>"><?= $category->title; ?></a>
+                        <ul class="submenu">
+                            <?php 
+                            $productListMenu->buffer();
+                            foreach ($productListMenu as $product) :
+                                if ($category->id == $product->categorylist_id) :
+                                    if ($product->published) :
+                            ?>
+                                    <li>
+                                        <a href="<?php echo $this->url('eshop', array('action'=>'productList', 'id' => $product->id));?>"><?= $product->title; ?></a>
+                                    </li>
+                            <?php endif; endif; endforeach; ?>
+                        </ul>
+                    </li>
+                    <?php endif; endforeach; ?>
+                </ul>
+            </div>
+            <div id="content">
+                <div id="contentIn">
+                    <h1>Administrace</h1>
+                    <?php if(count($flashMessages)) : ?>
+                    <ul>
+                        <?php foreach ($flashMessages as $msg) : ?>
+                        <li><?php echo $msg; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                    <?php echo $this->content; ?>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <a href="#">Mapa stránek</a> |
+            <a href="#">Tisknout stránku</a> |
+            <a href="<?php echo $this->url('application',
+                    array('action'=>'contact'));?>">Kontaktujte nás</a> <br />
+            2012 Kučera zámečnictví
+        </div>
+    </div>
+  <?php echo $this->inlineScript() ?>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Přihlašovací jméno</th>
+        <th>Jméno</th>
+        <th>Role</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($users as $user) :
+               
+        ?>
+        <tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+            <td><?= $user->id; ?></td>
+            <td><?= $user->username; ?></td>
+            <td><?= $user->name; ?></td>
+            <td><?= $user->role; ?></td>
+            <td><a href="<?php echo $this->url('admin', array('controller' => 'user', 'action'=>'edit', 'id' => $user->id));?>">edit</a></td>
+<!--            {if $user->isAllowed('users', 'edit')}
+            {/if}-->
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

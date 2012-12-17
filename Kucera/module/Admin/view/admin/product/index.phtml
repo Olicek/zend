@@ -1,0 +1,93 @@
+
+<h2><?= $productList->title; ?></h2>
+<span class="icon edit opener">Vložit nový produkt</span>
+<script>
+// increase the default animation speed to exaggerate the effect
+$.fx.speeds._default = 1000;
+$(function() {
+    $( "#dialog" ).dialog({
+            autoOpen: false,
+            show: "explode",
+            hide: "explode",
+            closeText: "hide",
+            draggable: false,
+            resizable: false,
+            modal: true,
+            width: 600,
+            title: "Editace produktu"
+    });
+
+    $( ".opener" ).click(function() {
+            $( "#dialog" ).dialog( "open" );
+            return false;
+    });
+});
+</script>
+
+
+<div id="dialog">
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'admin',
+    array(
+        'controller' => 'product',
+        'action' => 'index',
+        'id' => $id
+    )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('title')) . '</br>';
+echo $this->formRow($form->get('description')) . '</br>';
+echo $this->formRow($form->get('text')) . '</br>';
+echo $this->formRow($form->get('price')) . '</br>';
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Zobrazeno</th>
+        <th>id</th>
+        <th>Název</th>
+        <th>popis</th>
+        <th>Cena</th>
+        <th>Vloženo</th>
+        <th>Náhled</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($products as $list) :
+            
+        
+        ?>
+        <tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+            <td>
+            <?php if ($list->published) { ?>
+                    <a class="icon tick ajax" href="<?php echo $this->url('admin', array('controller' => 'product', 'action'=>'publish', 'id' => $list->id));?>"></a>
+            <?php } else { 
+            ?>
+                    <a class="icon untick ajax" href="<?php echo $this->url('admin', array('controller' => 'product', 'action'=>'publish', 'id' => $list->id));?>"></a>
+            <?php } ?>          
+            </td>
+            <td><?= $list->id; ?></td>
+            <td><a href="<?php echo $this->url('admin', array('controller' => 'product', 'action'=>'detail', 'id' => $list->id));?>"><?= $list->title?></a></td>
+            <td><?= $list->description; ?></td>
+            <td><?= $list->price; ?> Kč</td>
+            <td><?= $list->created; ?></td>
+            <?php $images->buffer();
+            foreach ($images as $image) :
+                    if($image->product_id == $list->id) : ?>
+                    <td>
+                        <img src="<?= $this->basePath() . $image->path . 'thumb/' . $image->name; ?>" alt="" />
+                    </td>
+            <?php endif; endforeach; ?>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

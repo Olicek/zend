@@ -1,0 +1,35 @@
+
+
+<h1><?= $productList->title; ?></h1>
+
+<?php foreach ($product as $product) :
+    if($product->published) :
+?>
+<div class="box">
+    <div class="tm">
+        <?php 
+        $images->buffer();
+        foreach ($images as $image) :
+            if ($image->product_id == $product->id) :
+        ?>
+                <div class="imgbox">
+                    <a href="<?php echo $this->url('eshop', array('action'=>'product', 'id' => $product->id));?>">
+                        <img src="<?php echo $this->basePath() . $image->path . 'thumb/' . $image->name; ?>" alt="<?= $image->name; ?>" />
+                    </a>
+                </div>
+        <?php endif; endforeach; ?>
+        <h2><a href="<?php echo $this->url('eshop', array('action'=>'product', 'id' => $product->id));?>"><?= $product->title; ?></a></h2>
+        <div class="price">
+            <div class="cena"><?= $product->price ?> Kč</div>
+            <div class="kosik">
+                <?php if (1) : //prihlaseni ?>
+                <a href="">Košík</a>
+                <?php else : ?>
+                <acronym title="Pro nákup se musíte přihlásit">Košík</acronym>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+        <p><?= $product->description; ?></p>
+</div>
+<?php endif; endforeach; ?>

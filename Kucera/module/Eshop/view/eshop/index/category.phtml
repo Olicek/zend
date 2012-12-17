@@ -1,0 +1,9 @@
+<h1><?= $category->title; ?></h1>
+
+<?php foreach ($productList as $list) : 
+        if($list->published) :
+?>
+<div class="box" class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+        <h2><a href="<?php echo $this->url('eshop', array('action'=>'productList', 'id' => $list->id));?>"><?= $list->title; ?></a></h2>
+</div>
+<?php endif; endforeach; ?>

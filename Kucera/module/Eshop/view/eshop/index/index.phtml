@@ -1,0 +1,10 @@
+<h1>E-shop</h1>
+
+<table>
+    <th>Kategorie</th>
+    <?php foreach ($categoryList as $list): ?>
+    <tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+        <td><a href="<?php echo $this->url('eshop', array('action'=>'category', 'id' => $list->id));?>"><?= $list->title; ?></a></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

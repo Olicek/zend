@@ -1,0 +1,52 @@
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+    'admin',
+    array(
+        'controller' => 'productList',
+        'action' => 'index'
+    )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('id'));
+echo $this->formRow($form->get('title')) . '<br />';
+echo $this->formRow($form->get('categorylist_id'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+
+<table>
+    <thead>
+    <tr>
+        <th>Zobrazeno</th>
+        <th>id</th>
+        <th>Název</th>
+        <th>Kategorie</th>
+        <th>Editovat</th>
+        <th>Odstranit</th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($productList as $plist) :
+            
+        
+        ?>
+    <tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+        <td>
+            <?php if ($plist->published) : ?>
+                    <a class="icon tick ajax" href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'publish', 'id' => $plist->id));?>"></a>
+            <?php  else : ?>
+                    <a class="icon untick ajax" href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'publish', 'id' => $plist->id));?>"></a>
+            <?php endif; ?>          
+        </td>
+        <td><?= $plist->id; ?></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'product', 'action'=>'index', 'id' => $plist->id));?>"><?= $plist->title; ?></a></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'category', 'action'=>'index', 'id' => $plist->categorylist_id));?>"><?= $plist->categorylist_id; ?></a></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'edit', 'id' => $plist->id));?>" class="icon edit opener" title="editovat"></a></td>
+        <td><a href="<?php echo $this->url('admin', array('controller' => 'productList', 'action'=>'delete', 'id' => $plist->id));?>" class="icon delete" title="smazat"></a></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

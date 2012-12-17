@@ -1,0 +1,39 @@
+<div id="detail">
+    <a href="<?php echo $this->url('eshop', array('action'=>'productList', 'id' => $product->productlist_id));?>">zpět</a>
+    <?php  if ($identity) : ?>
+    <div id="options">
+        <a href="<?php echo $this->url('admin', array('controller' => 'product', 'action'=>'delete', 'id' => $product->id));?>" class="icon untick">smazat</a>
+        <span class="icon edit opener">editovat</span>
+    </div>
+    <?php endif; ?>
+
+    <? // {/if} ?>
+    
+    <h2><?php //{if $user->isAllowed('product', 'edit')} ?>
+<!--            <a n:if="$product->published" class="icon tick" n:href="markUnPublished! $product->id"></a>
+        <a n:if="!$product->published" class="icon untick" n:href="markPublished! $product->id"></a>-->
+        <?php //{/if}
+        echo $product->title ?>
+    </h2>
+    
+    <div class="content">
+        <div class="box">
+            <?php foreach ($images as $image) : 
+                if ($image->product_id == $product->id) : ?>
+            <span n:foreach="$images as $image">
+                <img src="<?php echo $this->basePath() . $image->path . 'thumb/' . $image->name; ?>" alt="" />
+            </span>
+            <?php endif; endforeach; ?>
+        </div>
+        <div class="box">
+            <p><?= $product->description; ?></p>
+            <p><?= $product->price; ?> Kč</p>
+            
+            <p><?= $product->created; ?></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="content">
+        <p><?= $product->text; ?></p>
+    </div>
+</div>
